@@ -1,28 +1,30 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
-import 'package:google_map/utils/utils.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
 
 class DirectionsRepository {
   static String baseUrl =
-      "https://maps.googleapis.com/maps/api/directions/json?";
+      "https://landingpage.innoventixsolutions.com/wp-json/wp/v2/pages/14";
 
   final Dio dio;
 
   DirectionsRepository(this.dio);
 
-  Future getDirections(
-      {required LatLng origion, required LatLng destination}) async {
-    final response = await dio.get(baseUrl, queryParameters: {
-      "origin": "${origion.latitude} , ${origion.longitude}",
-      "destination": "${destination.latitude} , ${destination.longitude}",
-      "key": Global.apiKey
+  Future getDirections() async {
+    final response = await http.get(Uri.parse(baseUrl), headers: {
+      "authorization":
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJpbm5vdmUiLCJpYXQiOjE2NTc2OTkxNTYsImV4cCI6MTgxNTM3OTE1Nn0.75V2CGaB1cS7VXkloyYaNqAfDJaHC8N9m864vy9TSLo"
     });
-    print(response.data);
-    return response.data;
+    final parsedata = jsonDecode(response.body);
+    print(parsedata);
+    return null;
 
     /*if (response.statusCode == 200) {
       return Directions.fromMap(response.data);
     }
+
+
     return null;*/
   }
 }
