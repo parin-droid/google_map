@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_map/models/directions_model.dart';
-import 'package:google_map/repository/directions_repository.dart';
 import 'package:google_map/utils/marker_list.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -137,7 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
             _googleMapController!.animateCamera(CameraUpdate.newCameraPosition(
               currentPosition!,
             ));
-            await DirectionsRepository(dio).getDirections();
           },
           child: const Icon(Icons.center_focus_strong),
         ),
