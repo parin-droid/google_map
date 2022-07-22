@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_map/providers/user_provider.dart';
 import 'package:google_map/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
       providers: [ChangeNotifierProvider(create: (_) => User())],
       child: MaterialApp(
         title: 'Flutter Demo',
+        builder: EasyLoading.init(),
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey),
           primaryColor: Colors.white,

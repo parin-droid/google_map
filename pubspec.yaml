@@ -43,6 +43,7 @@ dependencies:
   uuid: ^3.0.6
   provider: ^6.0.3
   fluttertoast: ^8.0.9
+  flutter_easyloading: ^3.0.5
 
 dev_dependencies:
   flutter_test:
