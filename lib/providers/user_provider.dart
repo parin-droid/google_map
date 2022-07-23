@@ -16,15 +16,21 @@ class User with ChangeNotifier {
       required String password,
       required String type}) async {
     loading(show: true);
-    var response = await http.post(Uri.parse(baseUrl + "register"), body: {
-      "name": name,
-      "email": email,
-      "password": password,
-      "type": type
-    });
+    var response = await http.post(Uri.parse(baseUrl + "new_register"),
+        headers: {
+          'Charset': 'utf-8'
+        },
+        body: {
+          "name": name,
+          "email": email,
+          "password": password,
+          "type": type
+        });
     print(response.body);
+    //String data = response.body.toString();
     var parseData = jsonDecode(response.body);
     if (response.statusCode == 200) {
+      // var parseData = jsonDecode(response.body);
       loading(show: false);
       if (parseData['status'] == 200) {
         print(parseData['message']);

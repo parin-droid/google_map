@@ -22,7 +22,8 @@ class _LoginPageState extends State<LoginPage>
   String? selectedValues;
   UserModel? model;
   TabController? tabController;
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> lFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> sFormKey = GlobalKey<FormState>();
 
   TextEditingController lEmail = TextEditingController();
   TextEditingController lPassword = TextEditingController();
@@ -58,57 +59,58 @@ class _LoginPageState extends State<LoginPage>
                 color: Colors.black45,
               ),
               Positioned(
-                top: 300,
+                top: 270,
                 child: Container(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(30)),
                     color: Colors.white,
                   ),
                   child: Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       top: 30.0,
                     ),
-                    child: Form(
-                      key: formKey,
-                      child: DefaultTabController(
-                        length: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              "Traffic Notify",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            TabBar(
-                              controller: tabController,
-                              indicatorSize: TabBarIndicatorSize.tab,
-                              indicatorColor: Colors.blueGrey,
-                              tabs: [
-                                Tab(
-                                  text: "Login",
-                                ),
-                                Tab(
-                                  text: "Sign Up",
-                                )
-                              ],
-                            ),
-                            Expanded(
-                                child: TabBarView(
-                              controller: tabController,
-                              children: [
-                                Container(
-                                  color: Colors.white,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                    child: DefaultTabController(
+                      length: 2,
+                      child: Column(
+                        children: [
+                          const Text(
+                            "Traffic Notify",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TabBar(
+                            controller: tabController,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            indicatorColor: Colors.blueGrey,
+                            tabs: const [
+                              Tab(
+                                text: "Login",
+                              ),
+                              Tab(
+                                text: "Sign Up",
+                              )
+                            ],
+                          ),
+                          Expanded(
+                              child: TabBarView(
+                            controller: tabController,
+                            children: [
+                              /// LOGIN WIDGET
+                              Container(
+                                color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Form(
+                                    key: lFormKey,
                                     child: Column(
                                       children: [
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         TextFormField(
@@ -125,19 +127,20 @@ class _LoginPageState extends State<LoginPage>
                                             }
                                           },
                                           decoration: InputDecoration(
-                                              prefixIcon:
-                                                  Icon(Icons.alternate_email),
+                                              prefixIcon: const Icon(
+                                                  Icons.alternate_email),
                                               hintText: "Enter Your Email",
                                               contentPadding:
-                                                  EdgeInsets.only(left: 20),
-                                              hintStyle:
-                                                  TextStyle(color: Colors.grey),
+                                                  const EdgeInsets.only(
+                                                      left: 20),
+                                              hintStyle: const TextStyle(
+                                                  color: Colors.grey),
                                               border: OutlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           30))),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         TextFormField(
@@ -147,13 +150,14 @@ class _LoginPageState extends State<LoginPage>
                                               return "Password Required";
                                             } else if (val.length < 6) {
                                               return "Password more than 6 character";
-                                            } else {}
+                                            }
+                                            return null;
                                           },
                                           obscureText:
                                               isVisible == true ? false : true,
                                           decoration: InputDecoration(
-                                              prefixIcon:
-                                                  Icon(Icons.lock_outline),
+                                              prefixIcon: const Icon(
+                                                  Icons.lock_outline),
                                               hintText: "Enter Your Password",
                                               suffixIcon: GestureDetector(
                                                   onTap: () {
@@ -165,27 +169,29 @@ class _LoginPageState extends State<LoginPage>
                                                       ? Icons.visibility_off
                                                       : Icons.visibility)),
                                               contentPadding:
-                                                  EdgeInsets.only(left: 20),
-                                              hintStyle:
-                                                  TextStyle(color: Colors.grey),
+                                                  const EdgeInsets.only(
+                                                      left: 20),
+                                              hintStyle: const TextStyle(
+                                                  color: Colors.grey),
                                               border: OutlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           30))),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                                fixedSize: Size(150, 40),
+                                                fixedSize: const Size(150, 40),
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             20))),
                                             onPressed: () async {
-                                              if (formKey.currentState!
-                                                  .validate()) {
+                                              if (tabController!.index == 0 &&
+                                                  lFormKey.currentState!
+                                                      .validate()) {
                                                 final res =
                                                     await sprovider.userLogin(
                                                         email: lEmail.text,
@@ -202,7 +208,7 @@ class _LoginPageState extends State<LoginPage>
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              UserHomeScreen()));
+                                                              const UserHomeScreen()));
                                                 } else if (model!.type ==
                                                     "admin") {
                                                   Fluttertoast.showToast(
@@ -212,7 +218,7 @@ class _LoginPageState extends State<LoginPage>
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              HomeScreen()));
+                                                              const HomeScreen()));
                                                 } else {
                                                   Fluttertoast.showToast(
                                                       msg:
@@ -220,25 +226,25 @@ class _LoginPageState extends State<LoginPage>
                                                 }
                                               }
                                             },
-                                            child: Text("Login")),
-                                        SizedBox(
+                                            child: const Text("Login")),
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Text("Create An Account ?",
+                                            const Text("Create An Account ?",
                                                 style: TextStyle(
                                                     color: Colors.grey)),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 20,
                                             ),
                                             GestureDetector(
                                               onTap: () {
                                                 tabController!.animateTo(1);
                                               },
-                                              child: Text("Sign UP",
+                                              child: const Text("Sign UP",
                                                   style: TextStyle(
                                                       fontSize: 15,
                                                       color: Colors.blueGrey,
@@ -251,57 +257,91 @@ class _LoginPageState extends State<LoginPage>
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  color: Colors.white,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                              ),
+
+                              /// SIGNUP WIDGET
+                              Container(
+                                color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Form(
+                                    key: sFormKey,
                                     child: Column(
                                       children: [
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
                                         TextFormField(
                                           controller: sName,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Name Required";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
                                           decoration: InputDecoration(
-                                              prefixIcon: Icon(Icons.person),
+                                              prefixIcon:
+                                                  const Icon(Icons.person),
                                               hintText: "Enter Your Name",
                                               contentPadding:
-                                                  EdgeInsets.only(left: 20),
-                                              hintStyle:
-                                                  TextStyle(color: Colors.grey),
+                                                  const EdgeInsets.only(
+                                                      left: 20),
+                                              hintStyle: const TextStyle(
+                                                  color: Colors.grey),
                                               border: OutlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           30))),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         TextFormField(
                                           controller: sEmail,
+                                          validator: (value) {
+                                            RegExp rex = RegExp(
+                                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                            if (value!.isEmpty) {
+                                              return "Email Required";
+                                            } else if (!rex.hasMatch(value)) {
+                                              return "Enter Valid Email";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
                                           decoration: InputDecoration(
-                                              prefixIcon:
-                                                  Icon(Icons.alternate_email),
+                                              prefixIcon: const Icon(
+                                                  Icons.alternate_email),
                                               hintText: "Enter Your Email",
                                               contentPadding:
-                                                  EdgeInsets.only(left: 20),
-                                              hintStyle:
-                                                  TextStyle(color: Colors.grey),
+                                                  const EdgeInsets.only(
+                                                      left: 20),
+                                              hintStyle: const TextStyle(
+                                                  color: Colors.grey),
                                               border: OutlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           30))),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         TextFormField(
                                           controller: sPassword,
+                                          validator: (val) {
+                                            if (val!.isEmpty) {
+                                              return "Password Required";
+                                            } else if (val.length < 6) {
+                                              return "Password more than 6 character";
+                                            }
+                                            return null;
+                                          },
                                           obscureText:
                                               isVisible == true ? false : true,
                                           decoration: InputDecoration(
-                                              prefixIcon:
-                                                  Icon(Icons.lock_outline),
+                                              prefixIcon: const Icon(
+                                                  Icons.lock_outline),
                                               hintText: "Enter Your Password",
                                               suffixIcon: GestureDetector(
                                                   onTap: () {
@@ -313,19 +353,20 @@ class _LoginPageState extends State<LoginPage>
                                                       ? Icons.visibility_off
                                                       : Icons.visibility)),
                                               contentPadding:
-                                                  EdgeInsets.only(left: 20),
-                                              hintStyle:
-                                                  TextStyle(color: Colors.grey),
+                                                  const EdgeInsets.only(
+                                                      left: 20),
+                                              hintStyle: const TextStyle(
+                                                  color: Colors.grey),
                                               border: OutlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           30))),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         Container(
-                                          padding: EdgeInsets.only(
+                                          padding: const EdgeInsets.only(
                                               left: 20, right: 20),
                                           width:
                                               MediaQuery.of(context).size.width,
@@ -336,7 +377,7 @@ class _LoginPageState extends State<LoginPage>
                                                   BorderRadius.circular(30)),
                                           child: DropdownButtonHideUnderline(
                                             child: DropdownButton(
-                                                hint: Text(
+                                                hint: const Text(
                                                     "Please Select Option"),
                                                 items: dropValue
                                                     .map(
@@ -351,57 +392,65 @@ class _LoginPageState extends State<LoginPage>
                                                     selectedValues =
                                                         value.toString();
 
-                                                    print(selectedValues!
+                                                    debugPrint(selectedValues!
                                                         .toLowerCase()
                                                         .toString());
                                                   });
                                                 }),
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                                fixedSize: Size(150, 40),
+                                                fixedSize: const Size(150, 40),
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             20))),
                                             onPressed: () async {
-                                              print(sName.text);
-                                              print(sEmail.text);
-                                              print(sPassword.text);
-                                              print(selectedValues!
-                                                  .toLowerCase()
-                                                  .toString());
-                                              final res =
-                                                  await sprovider.createUser(
-                                                      name: sName.text,
-                                                      email: sEmail.text,
-                                                      password: sPassword.text,
-                                                      type: selectedValues!
-                                                          .toLowerCase()
-                                                          .toString());
-                                              if (res) {
-                                                Fluttertoast.showToast(
-                                                    msg:
-                                                        "Account Created Successfully");
-                                                tabController!.animateTo(0);
-                                              } else {
-                                                Fluttertoast.showToast(
-                                                    msg: "Something Wrong");
+                                              if (tabController!.index == 1 &&
+                                                  // debugPrint(sName.text);
+                                                  // debugPrint(sEmail.text);
+                                                  // debugPrint(sPassword.text);
+                                                  // debugPrint(selectedValues!
+                                                  //     .toLowerCase()
+                                                  //     .toString());
+                                                  sFormKey.currentState!
+                                                      .validate()) {
+                                                final res =
+                                                    await sprovider.createUser(
+                                                        name: sName.text,
+                                                        email: sEmail.text,
+                                                        password:
+                                                            sPassword.text,
+                                                        type: selectedValues!
+                                                            .toLowerCase()
+                                                            .toString());
+                                                if (res) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "Account Created Successfully");
+                                                  tabController!.animateTo(0);
+                                                } else {
+                                                  Fluttertoast.showToast(
+                                                      msg: "Something Wrong");
+                                                }
                                               }
                                             },
-                                            child: Text("Sign Up")),
+                                            child: const Text("Sign Up")),
+                                        SizedBox(
+                                          height: 50,
+                                        )
                                       ],
                                     ),
                                   ),
-                                )
-                              ],
-                            ))
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ))
+                        ],
                       ),
                     ),
                   ),
