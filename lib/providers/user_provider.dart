@@ -10,6 +10,8 @@ class User with ChangeNotifier {
   static final baseUrl =
       "http://traffic-signal.ondemandservicesappinflutter.online/api/";
 
+  final String key = "AIzaSyBdkKb83W3kygikgmWFqj3F0kE15EkYx_I";
+
   Future<bool> createUser(
       {required String name,
       required String email,

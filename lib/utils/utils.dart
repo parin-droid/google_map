@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class Global {
-  static String apiKey = "AIzaSyDr6v76RXaYX7UeN0HhvKsnHSBHZzCnBQA";
+  static String apiKey = "AIzaSyDkL7XVeU_H5ZQaLAM9CB-XSLRMqoVqoHI";
 }
 
 String getJson(jsonObject, {name}) {

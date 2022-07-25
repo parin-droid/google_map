@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.google_map">
+    package="com.trafficsignalnotifier.app">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -13,7 +13,7 @@
         android:icon="@mipmap/ic_launcher">
 
        <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyDr6v76RXaYX7UeN0HhvKsnHSBHZzCnBQA"/>
+           android:value="AIzaSyA3srhzXpBgyL2XyDMlwr0HC4guF2sQWGY"/>
 
         <activity
             android:name=".MainActivity"

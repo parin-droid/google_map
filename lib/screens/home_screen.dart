@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_map/models/directions_model.dart';
 import 'package:google_map/screens/login_screen.dart';
+import 'package:google_map/utils/location_services.dart';
 import 'package:google_map/utils/marker_list.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   GoogleMapController? _googleMapController;
   Dio dio = Dio();
   var uuid = Uuid();
+  TextEditingController searchController = TextEditingController();
 
   Future getLocation() async {
     Position position = await Geolocator.getCurrentPosition();
@@ -141,13 +143,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextFormField(
+                            controller: searchController,
                             textInputAction: TextInputAction.search,
                             decoration: InputDecoration(
                                 hintText: "Enter Address",
                                 border: InputBorder.none,
                                 contentPadding:
                                     EdgeInsets.only(left: 15, top: 15),
-                                suffixIcon: Icon(Icons.search)),
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    LocationServices()
+                                        .getPlace(searchController.text);
+                                  },
+                                  icon: Icon(Icons.search),
+                                )),
                           ),
                         ),
                       )

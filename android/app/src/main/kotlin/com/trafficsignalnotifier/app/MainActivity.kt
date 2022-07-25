@@ -1,4 +1,4 @@
-package com.example.google_map
+package com.trafficsignalnotifier.app
 
 import io.flutter.embedding.android.FlutterActivity
 

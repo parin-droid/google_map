@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "360204979632",
-    "project_id": "map-ccd6f",
-    "storage_bucket": "map-ccd6f.appspot.com"
+    "project_number": "290614321702",
+    "project_id": "traffic-sign-notifier",
+    "storage_bucket": "traffic-sign-notifier.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:360204979632:android:ce947176e114b84697da75",
+        "mobilesdk_app_id": "1:290614321702:android:c1a65ec17eb5232e953ce7",
         "android_client_info": {
-          "package_name": "com.example.google_map"
+          "package_name": "com.trafficsignalnotifier.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "360204979632-85s6q9h1nsgovhjml9t9b5419mqi7498.apps.googleusercontent.com",
+          "client_id": "290614321702-qjneb9cq4op3bv4obetsvcl7f5jlefb3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.google_map",
+            "package_name": "com.trafficsignalnotifier.app",
             "certificate_hash": "3a1e310d215fda4db148f3fab9f53613eb8cfb34"
           }
         },
         {
-          "client_id": "360204979632-7cqrndbs7t0ncuic1a9qrgs8s5d2j3mc.apps.googleusercontent.com",
+          "client_id": "290614321702-6jc5r0l7fo5oc4rpvrg37sk0fbjktn1e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDr6v76RXaYX7UeN0HhvKsnHSBHZzCnBQA"
+          "current_key": "AIzaSyA3srhzXpBgyL2XyDMlwr0HC4guF2sQWGY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "360204979632-7cqrndbs7t0ncuic1a9qrgs8s5d2j3mc.apps.googleusercontent.com",
+              "client_id": "290614321702-6jc5r0l7fo5oc4rpvrg37sk0fbjktn1e.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
