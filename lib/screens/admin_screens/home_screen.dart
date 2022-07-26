@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_map/models/get_place_id_model.dart';
+import 'package:google_map/models/get_location_model.dart';
+import 'package:google_map/models/get_place_by_id.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../models/directions_model.dart';
@@ -19,23 +19,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Location location = Location();
+  // Location location = Location();
   CameraPosition? currentPosition;
   bool isLoading = false;
   int selectedIndex = 0;
   Marker? _origion;
   Marker? _destination;
   Directions? _info;
-  GetPlaceId? placeIdData;
+  bool isVisible = false;
+  GetLocation? placeIdData;
   List<MarkerList> markers = [];
-  List<GetPlaceId> resultList = [];
+  List<GetLocation> resultList = [];
   GoogleMapController? _googleMapController;
   Dio dio = Dio();
+  GetPlaceById? getPlaceById;
   var uuid = const Uuid();
   TextEditingController searchController = TextEditingController();
 
   Future getLocation() async {
-    Position position = await Geolocator.getCurrentPosition();
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
     currentPosition = CameraPosition(
         target: LatLng(position.latitude, position.longitude), zoom: 20);
     _origion = Marker(
@@ -44,6 +47,12 @@ class _HomeScreenState extends State<HomeScreen> {
         position: LatLng(position.latitude, position.longitude));
     //markers.add(MarkerList(_origion!));
     return currentPosition;
+  }
+
+  Future<void> goToPlace(
+      {required double latitude, required double longitude}) async {
+    await _googleMapController!.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(latitude, longitude), zoom: 20.0)));
   }
 
   @override
@@ -109,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     left: 20,
                     right: 20,
                     child: Container(
-                      height: 50,
+                      //height: 200,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -126,6 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     await LocationServices().getLocation(value);
                                 if (res.isNotEmpty) {
                                   setState(() {
+                                    isVisible = true;
                                     resultList = res;
                                     // print("Latlong value");
                                     // // print(res!.placeId);
@@ -139,20 +149,58 @@ class _HomeScreenState extends State<HomeScreen> {
                                   contentPadding:
                                       const EdgeInsets.only(left: 15, top: 15),
                                   suffixIcon: IconButton(
-                                    onPressed: () async {},
+                                    onPressed: () async {
+                                      final res = await LocationServices()
+                                          .getLocation(searchController.text);
+                                      if (res.isNotEmpty) {
+                                        setState(() {
+                                          isVisible = true;
+                                          resultList = res;
+                                          // print("Latlong value");
+                                          // // print(res!.placeId);
+                                          // print("Latlong value");
+                                        });
+                                      }
+                                    },
                                     icon: const Icon(Icons.search),
                                   )),
                             ),
-                            ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: resultList.length,
-                                itemBuilder: (_, index) {
-                                  final item = resultList[index];
-                                  return ListTile(
-                                    title: Text(item.description!),
-                                  );
-                                })
+                            Container(
+                              //height: 200,
+                              color: Colors.grey.shade200,
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  // physics: NeverScrollableScrollPhysics(),
+                                  itemCount: resultList.length,
+                                  itemBuilder: (_, index) {
+                                    final item = resultList[index];
+                                    print(item.placeId);
+                                    return Visibility(
+                                      visible: isVisible,
+                                      child: ListTile(
+                                        title: Text(item.description!),
+                                        onTap: () async {
+                                          setState(() {
+                                            isVisible = false;
+                                          });
+                                          final res = await LocationServices()
+                                              .getPlaceById(item.placeId!);
+                                          setState(() {
+                                            getPlaceById = res;
+                                          });
+                                          searchController.text =
+                                              item.description!;
+                                          goToPlace(
+                                              latitude: getPlaceById!
+                                                  .geometry!.location!.lat!,
+                                              longitude: getPlaceById!
+                                                  .geometry!.location!.lng!);
+                                        },
+                                        textColor: Colors.black,
+                                      ),
+                                    );
+                                  }),
+                            )
                           ],
                         ),
                       ),

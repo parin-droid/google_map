@@ -1,4 +1,4 @@
-class GetPlaceId {
+class GetLocation {
   String? description;
   List<MatchedSubstrings>? matchedSubstrings;
   String? placeId;
@@ -7,7 +7,7 @@ class GetPlaceId {
   List<Terms>? terms;
   List<String>? types;
 
-  GetPlaceId(
+  GetLocation(
       {this.description,
       this.matchedSubstrings,
       this.placeId,
@@ -16,7 +16,7 @@ class GetPlaceId {
       this.terms,
       this.types});
 
-  GetPlaceId.fromJson(Map<String, dynamic> json) {
+  GetLocation.fromJson(Map<String, dynamic> json) {
     description = json['description'];
     if (json['matched_substrings'] != null) {
       matchedSubstrings = <MatchedSubstrings>[];
