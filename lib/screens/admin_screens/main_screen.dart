@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_map/screens/admin_screens/admin_profile.dart';
 import 'package:google_map/screens/admin_screens/home_screen.dart';
 import 'package:google_map/screens/admin_screens/signal_list.dart';
 import 'package:google_map/screens/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -27,7 +29,11 @@ class _MainScreenState extends State<MainScreen> {
                         },
                         child: Text("No")),
                     TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          await FirebaseAuth.instance.signOut();
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
+                          pref.clear();
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(

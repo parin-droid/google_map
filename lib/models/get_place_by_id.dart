@@ -56,7 +56,8 @@ class GetPlaceById {
     iconMaskBaseUri = json['icon_mask_base_uri'];
     name = json['name'];
     placeId = json['place_id'];
-    rating = json['rating'];
+    rating =
+        json['rating'] != null ? double.parse(json['rating'].toString()) : 0;
     reference = json['reference'];
     if (json['reviews'] != null) {
       reviews = <Reviews>[];

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_map/models/get_location_model.dart';
 import 'package:google_map/models/get_place_by_id.dart';
@@ -52,12 +53,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> goToPlace(
       {required double latitude, required double longitude}) async {
     await _googleMapController!.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(latitude, longitude), zoom: 20.0)));
+        CameraPosition(target: LatLng(latitude, longitude), zoom: 15.0)));
   }
 
   @override
   void dispose() {
-    if(_googleMapController!=null) {
+    if (_googleMapController != null) {
       _googleMapController!.dispose();
     }
     super.dispose();
@@ -76,6 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       mapType: MapType.normal,
                       zoomControlsEnabled: false,
                       myLocationButtonEnabled: false,
+                      myLocationEnabled: true,
+                      buildingsEnabled: true,
+                      //zoomGesturesEnabled: false,
                       markers: markers.map((e) => e.marker).toSet(),
                       onTap: (latlng) {
                         final id = uuid.v4();
@@ -129,7 +133,58 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            TextFormField(
+                            TypeAheadFormField(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller: searchController,
+                                textInputAction: TextInputAction.search,
+                                decoration: InputDecoration(
+                                    hintText: "Enter Address",
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.only(
+                                        left: 15, top: 15),
+                                    suffixIcon: IconButton(
+                                      onPressed: () async {
+                                        final res = await LocationServices()
+                                            .getLocation(searchController.text);
+                                        if (res.isNotEmpty) {
+                                          setState(() {
+                                            resultList = res;
+                                            // print("Latlong value");
+                                            // // print(res!.placeId);
+                                            // print("Latlong value");
+                                          });
+                                        }
+                                      },
+                                      icon: const Icon(Icons.search),
+                                    )),
+                              ),
+                              suggestionsCallback: (pattern) async {
+                                return await LocationServices()
+                                    .getLocation(pattern);
+                              },
+                              itemBuilder: (context, GetLocation suggestion) {
+                                return ListTile(
+                                  title: Text(suggestion.description!),
+                                );
+                              },
+                              onSuggestionSelected:
+                                  (GetLocation suggestion) async {
+                                searchController.text = suggestion.description!;
+                                final res = await LocationServices()
+                                    .getPlaceById(suggestion.placeId!);
+                                setState(() {
+                                  getPlaceById = res;
+                                });
+                                print(getPlaceById!.geometry!.location!.lat!);
+                                print(getPlaceById!.geometry!.location!.lng!);
+                                goToPlace(
+                                    latitude:
+                                        getPlaceById!.geometry!.location!.lat!,
+                                    longitude:
+                                        getPlaceById!.geometry!.location!.lng!);
+                              },
+                            ),
+                            /*TextFormField(
                               controller: searchController,
                               textInputAction: TextInputAction.search,
                               onFieldSubmitted: (value) async {
@@ -202,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     );
                                   }),
-                            )
+                            )*/
                           ],
                         ),
                       ),

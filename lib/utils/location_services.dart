@@ -36,5 +36,3 @@ class LocationServices {
     return null;
   }
 }
-
-

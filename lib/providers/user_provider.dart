@@ -1,16 +1,20 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_map/models/user_model.dart';
 import 'package:google_map/utils/utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class User with ChangeNotifier {
+  UserModel? userModel;
   static final baseUrl =
       "http://traffic-signal.ondemandservicesappinflutter.online/api/";
 
   final String key = "AIzaSyBdkKb83W3kygikgmWFqj3F0kE15EkYx_I";
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<bool> createUser(
       {required String name,
@@ -18,6 +22,12 @@ class User with ChangeNotifier {
       required String password,
       required String type}) async {
     loading(show: true);
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+    }
     var response = await http.post(Uri.parse(baseUrl + "new_register"),
         headers: {
           'Charset': 'utf-8'
@@ -49,6 +59,12 @@ class User with ChangeNotifier {
   Future<UserModel?> userLogin(
       {required String email, required String password}) async {
     loading(show: true);
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } catch (e) {
+      print(e.toString());
+    }
+
     final data = {
       "email": email,
       "password": password,
@@ -64,6 +80,8 @@ class User with ChangeNotifier {
     print(response.statusCode);
     final UserModel userModel;
     if (response.statusCode == 201) {
+      final pref = await SharedPreferences.getInstance();
+      await pref.setString("loadingData", jsonEncode(parseData));
       loading(show: false);
       userModel = UserModel.fromJson(parseData['data']);
       return userModel;
