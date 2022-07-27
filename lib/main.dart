@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_map/providers/user_provider.dart';
-import 'package:google_map/screens/arun_test.dart';
+
 import 'package:google_map/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           // is not restarted.
           // primarySwatch: Colors.blue,
         ),
-        home:  MyAppArun(),
+        home:  SplashScreen(),
       ),
     );
   }

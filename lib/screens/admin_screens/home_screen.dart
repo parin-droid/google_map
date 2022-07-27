@@ -57,7 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _googleMapController!.dispose();
+    if(_googleMapController!=null) {
+      _googleMapController!.dispose();
+    }
     super.dispose();
   }
 
