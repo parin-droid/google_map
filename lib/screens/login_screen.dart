@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_map/models/user_model.dart';
 import 'package:google_map/providers/user_provider.dart';
-import 'package:google_map/screens/home_screen.dart';
+import 'package:google_map/screens/admin_screens/main_screen.dart';
 import 'package:google_map/screens/user_home_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -218,7 +218,7 @@ class _LoginPageState extends State<LoginPage>
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              const HomeScreen()));
+                                                              const MainScreen()));
                                                 } else {
                                                   Fluttertoast.showToast(
                                                       msg:
